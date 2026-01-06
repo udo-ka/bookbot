@@ -4,6 +4,10 @@ def clean_text(text: str) -> str:
     return re.sub(r'[\n\s\t]+', ' ', text)
 
 
+def only_alphabets(text: str) -> str:
+    return re.sub(r'[^a-z^A-Z]+', ' ', text)
+
+
 def get_num_words(text: str) -> int:
     res = clean_text(text)
     words = res.strip().split(' ')
@@ -42,3 +46,21 @@ def print_list(record: list[dict[str, int]]) -> None:
         if ch.isalpha():
             print(f'{ ch }: { count }')
 
+
+
+def get_used_words(text: str, minimumCharacterLength: int | None = None) -> dict[str, int]:
+    words: dict[str, int] = dict()
+    items: list[str] = only_alphabets(text).strip().split(' ')
+    
+    for item in items:
+        word = item.lower()
+
+        if minimumCharacterLength and len(word) < minimumCharacterLength:
+            continue
+
+        if not words.get(word):
+            words[word] = 1
+        else:
+            words[word] += 1
+
+    return words
